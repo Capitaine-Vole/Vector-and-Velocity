@@ -1,3 +1,4 @@
+from numpy import angle
 import pygame
 import math
  
@@ -12,9 +13,6 @@ RANDOMED = (252, 153, 184)
  
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Vector")
- 
-def getMousePos():
-    return pygame.mouse.get_pos()
  
 class Ball:
     def __init__(self, x , y, color, radius, mass=1, win=screen):
@@ -36,28 +34,38 @@ class Ball:
     def launchBall(self):
         dx = pygame.mouse.get_pos()[0] - self.x
         dy = pygame.mouse.get_pos()[1] - self.y
-        """
-        if dx < 0:
-            dx *= -1
-        if dy < 0:
-            dy *= -1
-        if dx >= 0:
-            dx *= -1
-        if dy >= 0:
-            dy *= -1
-        """
         
+        #img = pygame.image.load("img/arrow.png")
+        
+
+        """
         angleA = math.atan2(dy, dx)
         angleO = math.atan2(dx, dy)
-        xm = math.cos(angleA) * 10
-        ym = math.sin(angleA) * 10
+        hyp = math.sqrt(dx**2 + dy**2)
+        xm = math.cos(angleA) * hyp
+        ym = math.sin(angleA) * hyp
+        
         x = self.x + dx * -1
         y = self.y + dy * -1
-        print(x, y)
-        #print(dm)
+        print(x, y, hyp, xm, ym)
+        """
+
+        angleA = math.atan2(dy, dx)
+        angleO = math.atan2(dx, dy)
+        hyp = math.sqrt(dx**2 + dy**2)
+        xm = math.cos(angleA) * 100
+        ym = math.sin(angleA) * 100
+        
+        x = xm * -1 + self.x
+        y = ym * -1 + self.y
+
+        #img = pygame.transform.scale(img, (100, 100))
+
         pygame.draw.lines(self.win, BLACK, False, ((self.x, self.y), (x, y)), 2)
         pygame.draw.lines(self.win, BLACK, False, ((self.x, self.y), (x, self.y)), 2)
         pygame.draw.lines(self.win, BLACK, False, ((x, y), (x, self.y)), 2)
+
+        #self.win.blit(img, (self.x - 15, self.y - 50))
  
  
 ball = Ball(WIDTH / 2, HEIGHT / 2, GREEN, 10)
